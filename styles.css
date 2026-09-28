@@ -11,6 +11,8 @@
   --color-highlight-yellow: #ffd23f;
   --color-highlight-pink: #ff6fa8;
   --color-highlight-mint: #45e0a0;
+  --color-valid: #16a34a;
+  --color-invalid: #dc2626;
   --color-overlay: rgba(0, 0, 0, 0.5);
   --grid-line: rgba(255, 255, 255, 0.07);
   --grid-line-strong: rgba(255, 255, 255, 0.15);
