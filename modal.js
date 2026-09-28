@@ -8,6 +8,7 @@ openButtons.forEach(button => {
         // Open the targeted modal
         if (targetModal) {
             targetModal.showModal();
+            document.body.style.overflow = "hidden";
         }
     });
 });
@@ -26,5 +27,9 @@ allModals.forEach(modal => {
         if (!isInDialog) {
             modal.close();
         }
+    });
+
+    modal.addEventListener("close", () => {
+        document.body.style.overflow = "";
     });
 });
