@@ -1,0 +1,312 @@
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap");
+
+/* ---------- 1. Design tokens ---------- */
+:root {
+  /* Colour */
+  --color-blueprint: #16359a;        /* page background */
+  --color-blueprint-deep: #0f2670;
+  --color-paper: #f3f5fc;            /* tracing-paper surfaces */
+  --color-paper-muted: rgba(243, 245, 252, 0.82);
+  --color-ink: #0c1638;              /* text + borders on paper */
+  --color-highlight-yellow: #ffd23f;
+  --color-highlight-pink: #ff6fa8;
+  --color-highlight-mint: #45e0a0;
+  --color-overlay: rgba(0, 0, 0, 0.5);
+  --grid-line: rgba(255, 255, 255, 0.07);
+  --grid-line-strong: rgba(255, 255, 255, 0.15);
+
+  /* Type */
+  --font-display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "Newsreader", Georgia, "Times New Roman", serif;
+  --text-sm: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
+  --text-base: clamp(1.05rem, 1rem + 0.3vw, 1.2rem);
+  --text-lg: clamp(1.5rem, 1.2rem + 1.5vw, 2rem);
+  --text-xl: clamp(2.5rem, 1.4rem + 6vw, 5rem);
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: clamp(1.25rem, 1rem + 2vw, 2rem);
+  --space-xl: clamp(1.5rem, 1rem + 5vw, 4rem);
+
+  /* Shape */
+  --border-width: 2px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-round: 50%;
+  --shadow-offset: 5px;
+  --shadow-offset-lg: 9px;
+
+  /* Layout */
+  --content-max-width: 46rem;
+  --modal-max-width: 500px;
+
+  /* Motion */
+  --duration-fast: 150ms;
+  --duration-modal: 350ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- 2. Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scrollbar-gutter: stable; /* stops layout jumping when body scroll is locked */
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--color-paper);
+  background-color: var(--color-blueprint);
+  /* Fine grid (24px) + major grid (120px) */
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(var(--grid-line-strong) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line-strong) 1px, transparent 1px);
+  background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+/* ---------- 3. Page layout ---------- */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  gap: var(--space-md);
+  max-width: var(--content-max-width);
+  min-height: 100dvh;
+  margin-inline: auto;
+  padding: var(--space-xl) var(--space-lg);
+}
+
+.container > h1,
+.container > p {
+  flex: 0 0 100%;
+}
+
+.container > h1 {
+  font-size: var(--text-xl);
+  font-weight: 800;
+  color: var(--color-paper);
+  text-wrap: balance;
+}
+
+.container > p {
+  margin: 0 0 var(--space-md);
+  font-size: var(--text-base);
+  color: var(--color-paper-muted);
+  max-width: 34rem;
+}
+
+/* ---------- 4. Buttons (trigger) ---------- */
+.open-btn {
+  --btn-accent: var(--color-highlight-yellow);
+
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--color-ink);
+  background: var(--color-paper);
+  border: var(--border-width) solid var(--color-ink);
+  border-radius: var(--radius-sm);
+  padding: 0.7em 1.3em;
+  cursor: pointer;
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--btn-accent);
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+/* Each trigger shares its accent with the modal it opens */
+.open-btn:nth-of-type(2) { --btn-accent: var(--color-highlight-pink); }
+.open-btn:nth-of-type(3) { --btn-accent: var(--color-highlight-mint); }
+
+.open-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--btn-accent);
+}
+
+.open-btn:active {
+  transform: translate(var(--shadow-offset), var(--shadow-offset));
+  box-shadow: 0 0 0 var(--btn-accent);
+}
+
+.open-btn:focus-visible {
+  outline: 3px solid var(--color-paper);
+  outline-offset: 4px;
+}
+
+/* ---------- 5. Modal (<dialog>) ---------- */
+dialog {
+  --modal-accent: var(--color-highlight-yellow);
+
+  /* Centered box, never wider than 500px, always leaves a gutter on small screens */
+  width: min(var(--modal-max-width), calc(100% - 2 * var(--space-md)));
+  max-height: calc(100dvh - 2 * var(--space-md));
+  margin: auto;
+  padding: var(--space-lg);
+  padding-right: calc(var(--space-lg) + 2rem); /* room for the close button */
+  overflow: auto;
+  overscroll-behavior: contain;
+
+  color: var(--color-ink);
+  background: var(--color-paper);
+  border: var(--border-width) solid var(--color-ink);
+  border-top: 14px solid var(--modal-accent); /* the "title band" of the sheet */
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-offset-lg) var(--shadow-offset-lg) 0 var(--modal-accent);
+
+  /* Closed state — the fade-in starts from here */
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity var(--duration-modal) var(--ease-out),
+    transform var(--duration-modal) var(--ease-out),
+    overlay var(--duration-modal) allow-discrete,
+    display var(--duration-modal) allow-discrete;
+}
+
+dialog:nth-of-type(2) { --modal-accent: var(--color-highlight-pink); }
+dialog:nth-of-type(3) { --modal-accent: var(--color-highlight-mint); }
+
+/* Open state — opacity 0 → 1 */
+dialog[open] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Where the transition starts the moment the dialog is shown */
+@starting-style {
+  dialog[open] {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+/* Dark semi-transparent overlay, fading in with the box */
+dialog::backdrop {
+  background: var(--color-overlay); /* rgba(0,0,0,0.5) */
+  opacity: 0;
+  transition:
+    opacity var(--duration-modal) var(--ease-out),
+    overlay var(--duration-modal) allow-discrete,
+    display var(--duration-modal) allow-discrete;
+}
+
+dialog[open]::backdrop {
+  opacity: 1;
+}
+
+@starting-style {
+  dialog[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+dialog h3 {
+  font-size: var(--text-lg);
+  font-weight: 800;
+  margin-bottom: var(--space-sm);
+}
+
+dialog p {
+  margin: 0;
+  max-width: 62ch;
+}
+
+/* Close button — pinned top right */
+dialog form {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  margin: 0;
+}
+
+dialog form button {
+  position: relative;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  cursor: pointer;
+  color: transparent;   /* hides the ❌ glyph; we draw a cleaner × below */
+  font-size: 0;
+  line-height: 0;
+  background: var(--color-paper);
+  border: var(--border-width) solid var(--color-ink);
+  border-radius: var(--radius-round);
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
+}
+
+dialog form button::before,
+dialog form button::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.1rem;
+  height: 2px;
+  background: var(--color-ink);
+  border-radius: 2px;
+}
+
+dialog form button::before { transform: translate(-50%, -50%) rotate(45deg); }
+dialog form button::after  { transform: translate(-50%, -50%) rotate(-45deg); }
+
+dialog form button:hover {
+  background: var(--modal-accent);
+  transform: rotate(90deg);
+}
+
+dialog form button:focus-visible {
+  outline: 3px solid var(--color-ink);
+  outline-offset: 3px;
+}
+
+/* ---------- Small screens ---------- */
+@media (max-width: 480px) {
+  .open-btn {
+    flex: 1 1 100%; /* stacked, full-width, easy to tap */
+  }
+
+  dialog {
+    --shadow-offset-lg: 6px;
+    padding-right: calc(var(--space-lg) + 1.5rem);
+  }
+}
+
+/* ---------- Accessibility: reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+
+  .open-btn:hover,
+  .open-btn:active,
+  dialog form button:hover {
+    transform: none;
+  }
+}
