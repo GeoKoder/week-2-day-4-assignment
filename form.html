@@ -7,61 +7,82 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <h1>Mctaba Trip Registration Form</h1>
-    <p>Kindly register with us.</p>
+    <main class="container">
+      <h1>Mctaba Trip Registration Form</h1>
+      <p>Kindly register with us.</p>
 
-    <form id="signup-form" action="#" method="POST">
-      <!-- Name Field  -->
-      <div>
-        <label for="name">Full Name:</label><br />
-        <input type="text" name="name" id="name" placeholder="James Kariuki" />
-        <div id="name-error" class="name-error"></div>
-      </div>
-      <br />
+      <form id="signup-form" class="sheet" action="#" method="POST" novalidate>
+        <!-- Name Field -->
+        <div class="field">
+          <label for="name">Full name</label>
+          <div class="input-wrap">
+            <input
+              type="text"
+              name="name"
+              id="name"
+              placeholder="James Kariuki"
+              autocomplete="name"
+              aria-describedby="name-error"
+            />
+          </div>
+          <div id="name-error" class="field-error" aria-live="polite"></div>
+        </div>
 
-      <!-- Email Field  -->
-      <div>
-        <label for="email">Email Address:</label><br />
-        <input
-          type="email"
-          name="email"
-          id="email"
-          placeholder="jameskariuki2@example.com"
-        />
-        <div id="email-error" class="email-error"></div>
-      </div>
-      <br />
+        <!-- Email Field -->
+        <div class="field">
+          <label for="email">Email address</label>
+          <div class="input-wrap">
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="jameskariuki2@example.com"
+              autocomplete="email"
+              aria-describedby="email-error"
+            />
+          </div>
+          <div id="email-error" class="field-error" aria-live="polite"></div>
+        </div>
 
-      <!-- Phone Field  -->
-      <div>
-        <label for="phone">Phone Number:</label><br />
-        <input
-          type="tel"
-          id="phone"
-          name="phone"
-          placeholder="0712345678 or 0112345678"
-        />
-        <div id="phoneError" style="color: red; min-height: 18px"></div>
-      </div>
-      <br />
+        <!-- Phone Field -->
+        <div class="field">
+          <label for="phone">Phone number</label>
+          <div class="input-wrap">
+            <input
+              type="tel"
+              name="phone"
+              id="phone"
+              placeholder="0712345678 or 0112345678"
+              autocomplete="tel"
+              aria-describedby="phone-error"
+            />
+          </div>
+          <div id="phone-error" class="field-error" aria-live="polite"></div>
+        </div>
 
-      <!-- Password Field  -->
-      <div>
-        <label for="password">Password:</label><br />
-        <input
-          type="password"
-          name="password"
-          id="password"
-          placeholder="••••••••"
-        />
-        <div id="password-error" class="password-error"></div>
-      </div>
-      <br />
+        <!-- Password Field -->
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="input-wrap">
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="••••••••"
+              autocomplete="new-password"
+              aria-describedby="password-error"
+            />
+          </div>
+          <div id="password-error" class="field-error" aria-live="polite"></div>
+        </div>
 
-      <button type="submit">Submit</button>
+        <button type="submit" id="submit-btn" class="submit-btn" disabled>
+          Submit
+        </button>
 
-      <p id="success-message" class="success-message"></p>
-    </form>
+        <p id="success-message" class="success-message" role="status"></p>
+      </form>
+    </main>
 
     <script src="form.js"></script>
   </body>

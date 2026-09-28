@@ -284,18 +284,173 @@ dialog form button:focus-visible {
   outline-offset: 3px;
 }
 
+/* ---------- 6. Form (registration sheet) ---------- */
+.sheet {
+  --sheet-accent: var(--color-highlight-pink);
+ 
+  display: grid;
+  gap: var(--space-md);
+  flex: 0 0 100%;
+  max-width: 34rem;
+  padding: var(--space-lg);
+  color: var(--color-ink);
+  background: var(--color-paper);
+  border: var(--border-width) solid var(--color-ink);
+  border-top: 14px solid var(--sheet-accent);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-offset-lg) var(--shadow-offset-lg) 0 var(--sheet-accent);
+}
+ 
+.field {
+  display: grid;
+  gap: 0.35rem;
+}
+ 
+.field label {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+ 
+/* The wrapper is what carries the ✓ / ✗ icon (inputs can't have ::after) */
+.input-wrap {
+  position: relative;
+}
+ 
+.input-wrap input {
+  width: 100%;
+  padding: 0.7em 2.75em 0.7em 0.9em; /* right padding leaves room for the icon */
+  font: inherit;
+  color: var(--color-ink);
+  background: var(--color-field);
+  border: var(--border-width) solid var(--color-ink);
+  border-radius: var(--radius-sm);
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+ 
+.input-wrap input::placeholder {
+  color: var(--color-ink-faint);
+}
+ 
+.input-wrap input:focus-visible {
+  outline: 3px solid var(--color-blueprint);
+  outline-offset: 2px;
+}
+ 
+/* Feedback states — JS only toggles .is-valid / .is-invalid on .field */
+.field.is-valid input   { border-color: var(--color-valid); }
+.field.is-invalid input { border-color: var(--color-invalid); }
+ 
+.input-wrap::after {
+  position: absolute;
+  top: 50%;
+  right: 0.9em;
+  transform: translateY(-50%);
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 800;
+  line-height: 1;
+  pointer-events: none;
+}
+ 
+.field.is-valid .input-wrap::after {
+  content: "\2713"; /* ✓ */
+  color: var(--color-valid);
+}
+ 
+.field.is-invalid .input-wrap::after {
+  content: "\2717"; /* ✗ */
+  color: var(--color-invalid);
+}
+ 
+/* Reserve one line so the layout doesn't jump when a message appears */
+.field-error {
+  min-height: 1.4em;
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  color: var(--color-invalid);
+}
+ 
+/* Submit: dashed "draft" when disabled, solid "inked" when ready */
+.submit-btn {
+  width: 100%;
+  padding: 0.85em 1.3em;
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  color: var(--color-paper);
+  background: var(--color-ink);
+  border: var(--border-width) solid var(--color-ink);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-highlight-mint);
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+ 
+.submit-btn:hover:not(:disabled) {
+  transform: translate(-2px, -2px);
+  box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-highlight-mint);
+}
+ 
+.submit-btn:active:not(:disabled) {
+  transform: translate(var(--shadow-offset), var(--shadow-offset));
+  box-shadow: 0 0 0 var(--color-highlight-mint);
+}
+ 
+.submit-btn:disabled {
+  cursor: not-allowed;
+  color: var(--color-ink-faint);
+  background: transparent;
+  border: var(--border-width) dashed var(--color-ink-faint);
+  box-shadow: none;
+}
+ 
+.submit-btn:focus-visible {
+  outline: 3px solid var(--color-blueprint);
+  outline-offset: 3px;
+}
+ 
+/* Hidden while empty, a mint banner once JS fills it */
+.success-message {
+  margin: 0;
+}
+ 
+.success-message:empty {
+  display: none;
+}
+ 
+.success-message:not(:empty) {
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  background: var(--color-highlight-mint);
+  border: var(--border-width) solid var(--color-ink);
+  border-radius: var(--radius-sm);
+}
+
+
 /* ---------- Small screens ---------- */
 @media (max-width: 480px) {
   .open-btn {
     flex: 1 1 100%; /* stacked, full-width, easy to tap */
   }
-
+ 
+  .sheet,
   dialog {
     --shadow-offset-lg: 6px;
+  }
+ 
+  dialog {
     padding-right: calc(var(--space-lg) + 1.5rem);
   }
 }
-
+ 
 /* ---------- Accessibility: reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -303,7 +458,7 @@ dialog form button:focus-visible {
   *::after {
     transition-duration: 0.01ms !important;
   }
-
+ 
   .open-btn:hover,
   .open-btn:active,
   dialog form button:hover {

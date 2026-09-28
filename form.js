@@ -1,86 +1,128 @@
 const form = document.getElementById("signup-form");
+const submitBtn = document.getElementById("submit-btn");
+const successMessage = document.getElementById("success-message");
 
-form.addEventListener("submit", function (event) {
-  // Prevent default to handle everything locally.
-  event.preventDefault();
+const validators = {
+  name(raw) {
+    const value = raw.trim();
+    if (value === "") return "Full name is required";
+    if (value.length < 2) return "Name must be at least 2 characters long.";
+    return "";
+  },
 
-  let isValid = true;
+  email(raw) {
+    const value = raw.trim();
+    if (value == "") return "Email address is required";
+    if (/\s/.test(value)) return "Email cannot contain spaces.";
+    if (!value.includes("@")) return "Email must contain an @ symbol.";
+    if (!/^[^@]+@[^@]+\.[^@]+$/.test(value)) {
+      return "Add text before the @ and a domain with a '.' after it, like name@example.com.";
+    }
+    return "";
+  },
 
-  // Get Input Elements
-  const name = document.getElementById("name");
-  const email = document.getElementById("email");
-  const phone = document.getElementById("phone");
-  const password = document.getElementById("password");
+  phone(raw) {
+    const value = raw.trim();
+    if (value === "") {
+      return "Phone is required: 10 digits starting with 07 or 01.";
+    }
+    if (/\D/.test(value)) {
+      return "Phone can only contain digits (no spaces, dashes or +254).";
+    }
+    // Compare what has been typed so far with the allowed prefixes,
+    // so "0" is fine but "08" or "1" is flagged straight away.
+    const start = value.slice(0, 2);
+    if (!"07".startsWith(start) && !"01".startsWith(start)) {
+      return "Phone must start with 07 or 01.";
+    }
+    if (value.length !== 10) {
+      return `Phone must be exactly 10 digits (you have ${value.length}).`;
+    }
+    return "";
+  },
 
-  // Error message Elements
-  const nameError = document.getElementById("name-error");
-  const emailError = document.getElementById("email-error");
-  const phoneError = document.getElementById("phone-error");
-  const passwordError = document.getElementById("password-error");
-  const successMessage = document.getElementById("success-message");
+  password(raw) {
+     const missing = [];
+    if (raw.length < 8) missing.push("at least 8 characters");
+    if (!/[A-Z]/.test(raw)) missing.push("an uppercase letter");
+    if (!/[0-9]/.test(raw)) missing.push("a number");
+ 
+    if (missing.length === 0) return "";
+    const list = missing.join(", ").replace(/, ([^,]*)$/, " and $1");
+    return `Password needs ${list}.`;
+  },
+};
 
-  // Reset previous error messages an success messages
-  nameError.textContent = "";
-  emailError.textContent = "";
-  phoneError.textContent = "";
-  passwordError.textContent = "";
-  successMessage.textContent = "";
+// Matching the validator to the InputDeviceInfo, group and error boxes 
+const fields = Object.keys(validators).map((key) => ({
+    key, 
+    input: document.getElementById(key),
+    group: document.getElementById(key).closest(".field"),
+    error: document.getElementById(`${key}-error`),
+    validate: validators[key],
+}));
 
-  // Name Validation
-  const nameValue = name.ariaValueMax.trim();
-  if (nameValue.length < 2) {
-    nameError.textContent = "Name must be at least 2 characters long.";
-    isValid = false;
-  }
 
-  // Email Validation
-  const emailValue = email.ariaValueMax.trim();
-  const emailPattern = /^[^@]+@[^@]+\.[^@]+$/;
-  if (!emailPattern.test(emailValue)) {
-    emailError.textContent =
-      "Enter a valid email (must contain @ and a '.' after it).";
-    isValid = false;
-  }
+// Show Feedback on the frontend 
+function showFeedback (field) {
+    const message = field.validate(field.input.value);
+    
+    field.group.classList.toggle("is-valid", message === "");
+    field.group.classList.toggle("is-invalid", message !== "");
+    field.error.textContent = message;
+    field.input.setAtrribute("aria-invalid", message === "" ? "false" : "true");
+}
 
-  // Phone Validation
-  const phoneValue = phone.value.trim();
-  const phonePattern = /^(07|01)\d{8}$/;
-  if (!phonePattern.test(phoneValue)) {
-    phoneError.textContent =
-      "Phone must be exactly 10 digits starting with 07 or 01.";
-    isValid = false;
-  }
+function clearFeedback(field) {
+    field.group.classList.remove("is-valid", "is-invalid");
+    field.error.textContent = "";
+    field.input.removeAttribut("aria-invalid");
+}
 
-  // Password Validation
-  const passwordValue = password.value;
-  const hasUppercase = /[A-Z]/.test(passwordValue);
-  const hasNumber = /[0-9]/.test(passwordValue);
+function allFieldsValid() {
+    return fields.every((f) => f.validate(f.input.value) === "");
+}
 
-  if (passwordValue.length < 8) {
-    passwordError.textContent = "Password must be at least 8 characters long.";
-    isValid = false;
-  } else if (!hasUppercase) {
-    passwordError.textContent =
-      "Password must include at least one uppercase letter.";
-    isValid = false;
-  } else if (!hasNumber) {
-    passwordError.textContent = "Password must include at least one number.";
-    isValid = false;
-  }
+function updateSubmitState() {
+    submitBtn.disabled = !allFieldsValid();
+}
 
-  // Final Execution Check
-  if (isValid) {
-    successMessage.textContent =
-      "Form submitted successfully! (Data processed locally)";
 
-    // Log to browser console
-    console.log("User Registered:", {
-      name: nameValue,
-      email: emailValue,
-      phone: phoneValue,
-      password: passwordValue,
+// Live Validation 
+fields.forEach((field) => {
+    field.input.addEventListener("input", () => {
+        successMessage.textContent = "";
+        showFeedback(field);
+        updateSubmitState();
     });
-  }
+});
 
-  form.reset();
+fields.forEach((f) => {
+    if (f.input.value !== "") showFeedback(f);
+});
+updateSubmitState();
+
+
+// Handle Submition
+form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    if (!allFieldsValid()) {
+        fields.forEach(showFeedback);
+        updateSubmitState();
+        return;
+    } 
+
+    const formData = {};
+    fields.forEach(({key, input}) => {
+        formData[key] = key === "password" ? input.value : input.value.trim();
+    });
+
+    console.log("User Registered:", formData);
+
+    // Reset the form
+    form.reset();
+    fields.forEach(clearFeedback);
+    updateSubmitState()
+    successMessage.textContent = "Form submitted successfully! (Data processed locally)";
 });
