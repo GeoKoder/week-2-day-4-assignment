@@ -1,14 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Popup System</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>A Popup System</h1>
+      <p>Explaining the Core Front-end Technologies</p>
+
+      <!-- Trigger Buttons  -->
+      <button class="open-btn" data-modal="modal1">Learn More</button>
+      <button class="open-btn" data-modal="modal2">Learn More</button>
+      <button class="open-btn" data-modal="modal3">Learn More</button>
+
+      <!-- Modals -->
+      <!-- Modal 1 -->
+      <dialog id="modal1">
+        <h3>What is HTML?</h3>
+        <p>The backbone and structural foundation of any webpage. It tells
+              the browser what content to display on the page (like a skeleton).</p>
+        <form method="dialog"><button>&#10060;</button></form>
+      </dialog>
+
+      <!-- Modal 2 -->
+      <dialog id="modal2">
+        <h3>What is CSS?</h3>
+        <p>The visual styling and design layer. It makes the webpage look
+              good by controlling the layout, colors, fonts and overall
+              presentation. Without CSS every website would just look like a
+              plain text.</p>
+        <form method="dialog"><button>&#10060;</button></form>
+      </dialog>
+
+      <!-- Modal 3 -->
+      <dialog id="modal3">
+        <h3>What is Javascript?</h3>
+        <p>The programming language that adds life and functionality. It
+              makes the webpage interactive and dynamic. It allows the page to
+              react to user actions without forcing you to reload the entire
+              screen.</p>
+        <form method="dialog"><button>&#10060;</button></form>
+      </dialog>
+
+    </div>
 
     <script src="modal.js"></script>
-</body>
+  </body>
 </html>
