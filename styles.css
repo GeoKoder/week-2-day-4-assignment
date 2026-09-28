@@ -3,11 +3,11 @@
 /* ---------- 1. Design tokens ---------- */
 :root {
   /* Colour */
-  --color-blueprint: #16359a;        /* page background */
+  --color-blueprint: #16359a; /* page background */
   --color-blueprint-deep: #0f2670;
-  --color-paper: #f3f5fc;            /* tracing-paper surfaces */
+  --color-paper: #f3f5fc; /* tracing-paper surfaces */
   --color-paper-muted: rgba(243, 245, 252, 0.82);
-  --color-ink: #0c1638;              /* text + borders on paper */
+  --color-ink: #0c1638; /* text + borders on paper */
   --color-highlight-yellow: #ffd23f;
   --color-highlight-pink: #ff6fa8;
   --color-highlight-mint: #45e0a0;
@@ -75,7 +75,11 @@ body {
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
     linear-gradient(var(--grid-line-strong) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-line-strong) 1px, transparent 1px);
-  background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
+  background-size:
+    24px 24px,
+    24px 24px,
+    120px 120px,
+    120px 120px;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -140,12 +144,17 @@ h3 {
 }
 
 /* Each trigger shares its accent with the modal it opens */
-.open-btn:nth-of-type(2) { --btn-accent: var(--color-highlight-pink); }
-.open-btn:nth-of-type(3) { --btn-accent: var(--color-highlight-mint); }
+.open-btn:nth-of-type(2) {
+  --btn-accent: var(--color-highlight-pink);
+}
+.open-btn:nth-of-type(3) {
+  --btn-accent: var(--color-highlight-mint);
+}
 
 .open-btn:hover {
   transform: translate(-2px, -2px);
-  box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--btn-accent);
+  box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px)
+    0 var(--btn-accent);
 }
 
 .open-btn:active {
@@ -176,7 +185,8 @@ dialog {
   border: var(--border-width) solid var(--color-ink);
   border-top: 14px solid var(--modal-accent); /* the "title band" of the sheet */
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-offset-lg) var(--shadow-offset-lg) 0 var(--modal-accent);
+  box-shadow: var(--shadow-offset-lg) var(--shadow-offset-lg) 0
+    var(--modal-accent);
 
   /* Closed state — the fade-in starts from here */
   opacity: 0;
@@ -188,8 +198,12 @@ dialog {
     display var(--duration-modal) allow-discrete;
 }
 
-dialog:nth-of-type(2) { --modal-accent: var(--color-highlight-pink); }
-dialog:nth-of-type(3) { --modal-accent: var(--color-highlight-mint); }
+dialog:nth-of-type(2) {
+  --modal-accent: var(--color-highlight-pink);
+}
+dialog:nth-of-type(3) {
+  --modal-accent: var(--color-highlight-mint);
+}
 
 /* Open state — opacity 0 → 1 */
 dialog[open] {
@@ -250,7 +264,7 @@ dialog form button {
   height: 2.75rem;
   padding: 0;
   cursor: pointer;
-  color: transparent;   /* hides the ❌ glyph; we draw a cleaner × below */
+  color: transparent; /* hides the ❌ glyph; we draw a cleaner × below */
   font-size: 0;
   line-height: 0;
   background: var(--color-paper);
@@ -273,8 +287,12 @@ dialog form button::after {
   border-radius: 2px;
 }
 
-dialog form button::before { transform: translate(-50%, -50%) rotate(45deg); }
-dialog form button::after  { transform: translate(-50%, -50%) rotate(-45deg); }
+dialog form button::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+dialog form button::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
 
 dialog form button:hover {
   background: var(--modal-accent);
@@ -289,7 +307,7 @@ dialog form button:focus-visible {
 /* ---------- 6. Form (registration sheet) ---------- */
 .sheet {
   --sheet-accent: var(--color-highlight-pink);
- 
+
   display: grid;
   gap: var(--space-md);
   flex: 0 0 100%;
@@ -300,25 +318,26 @@ dialog form button:focus-visible {
   border: var(--border-width) solid var(--color-ink);
   border-top: 14px solid var(--sheet-accent);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-offset-lg) var(--shadow-offset-lg) 0 var(--sheet-accent);
+  box-shadow: var(--shadow-offset-lg) var(--shadow-offset-lg) 0
+    var(--sheet-accent);
 }
- 
+
 .field {
   display: grid;
   gap: 0.35rem;
 }
- 
+
 .field label {
   font-family: var(--font-display);
   font-size: var(--text-sm);
   font-weight: 700;
 }
- 
+
 /* The wrapper is what carries the ✓ / ✗ icon (inputs can't have ::after) */
 .input-wrap {
   position: relative;
 }
- 
+
 .input-wrap input {
   width: 100%;
   padding: 0.7em 2.75em 0.7em 0.9em; /* right padding leaves room for the icon */
@@ -331,20 +350,24 @@ dialog form button:focus-visible {
     border-color var(--duration-fast) var(--ease-out),
     box-shadow var(--duration-fast) var(--ease-out);
 }
- 
+
 .input-wrap input::placeholder {
   color: var(--color-ink-faint);
 }
- 
+
 .input-wrap input:focus-visible {
   outline: 3px solid var(--color-blueprint);
   outline-offset: 2px;
 }
- 
+
 /* Feedback states — JS only toggles .is-valid / .is-invalid on .field */
-.field.is-valid input   { border-color: var(--color-valid); }
-.field.is-invalid input { border-color: var(--color-invalid); }
- 
+.field.is-valid input {
+  border-color: var(--color-valid);
+}
+.field.is-invalid input {
+  border-color: var(--color-invalid);
+}
+
 .input-wrap::after {
   position: absolute;
   top: 50%;
@@ -356,17 +379,17 @@ dialog form button:focus-visible {
   line-height: 1;
   pointer-events: none;
 }
- 
+
 .field.is-valid .input-wrap::after {
   content: "\2713"; /* ✓ */
   color: var(--color-valid);
 }
- 
+
 .field.is-invalid .input-wrap::after {
   content: "\2717"; /* ✗ */
   color: var(--color-invalid);
 }
- 
+
 /* Reserve one line so the layout doesn't jump when a message appears */
 .field-error {
   min-height: 1.4em;
@@ -374,7 +397,7 @@ dialog form button:focus-visible {
   line-height: 1.4;
   color: var(--color-invalid);
 }
- 
+
 /* Submit: dashed "draft" when disabled, solid "inked" when ready */
 .submit-btn {
   width: 100%;
@@ -388,22 +411,24 @@ dialog form button:focus-visible {
   background: var(--color-ink);
   border: var(--border-width) solid var(--color-ink);
   border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--color-highlight-mint);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0
+    var(--color-highlight-mint);
   transition:
     transform var(--duration-fast) var(--ease-out),
     box-shadow var(--duration-fast) var(--ease-out);
 }
- 
+
 .submit-btn:hover:not(:disabled) {
   transform: translate(-2px, -2px);
-  box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--color-highlight-mint);
+  box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px)
+    0 var(--color-highlight-mint);
 }
- 
+
 .submit-btn:active:not(:disabled) {
   transform: translate(var(--shadow-offset), var(--shadow-offset));
   box-shadow: 0 0 0 var(--color-highlight-mint);
 }
- 
+
 .submit-btn:disabled {
   cursor: not-allowed;
   color: var(--color-ink-faint);
@@ -411,21 +436,21 @@ dialog form button:focus-visible {
   border: var(--border-width) dashed var(--color-ink-faint);
   box-shadow: none;
 }
- 
+
 .submit-btn:focus-visible {
   outline: 3px solid var(--color-blueprint);
   outline-offset: 3px;
 }
- 
+
 /* Hidden while empty, a mint banner once JS fills it */
 .success-message {
   margin: 0;
 }
- 
+
 .success-message:empty {
   display: none;
 }
- 
+
 .success-message:not(:empty) {
   padding: var(--space-sm) var(--space-md);
   font-family: var(--font-display);
@@ -436,23 +461,157 @@ dialog form button:focus-visible {
   border-radius: var(--radius-sm);
 }
 
+/* ---------- 7. Drag list ---------- */
+
+#draggable-list {
+  display: grid;
+  gap: var(--space-sm);
+  width: 100%;
+  max-width: 42rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: task;
+}
+
+/* ---------- 2. Individual task ---------- */
+.list-item {
+  counter-increment: task;
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 4.5rem;
+  padding: var(--space-md) var(--space-lg);
+  color: var(--color-ink);
+  background: var(--color-paper);
+  border: var(--border-width) solid var(--color-ink);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0
+    var(--color-highlight-yellow);
+  cursor: grab;
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 700;
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out),
+    opacity var(--duration-fast) var(--ease-out);
+}
+
+/* ---------- 3. Automatic priority number ---------- */
+
+.list-item::before {
+  content: counter(task);
+  display: grid;
+  place-items: center;
+  flex: 0 0 2.2rem;
+  width: 2.2rem;
+  height: 2.2rem;
+  margin-right: var(--space-md);
+  color: var(--color-ink);
+  background: var(--color-highlight-yellow);
+  border: var(--border-width) solid var(--color-ink);
+  border-radius: var(--radius-round);
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 800;
+}
+
+/* ---------- 4. Hover feedback ---------- */
+
+.list-item:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px)
+    0 var(--color-highlight-pink);
+}
+
+/* ---------- 5. Dragging state ---------- */
+
+.list-item.dragging {
+  opacity: 0.45;
+  cursor: grabbing;
+  transform: scale(0.98);
+  box-shadow: var(--shadow-offset-lg) var(--shadow-offset-lg) 0
+    var(--color-highlight-pink);
+}
+
+/* ---------- 6. Drop indicator ---------- */
+
+/*
+   JavaScript will add .drop-target to the item
+   where the dragged task is about to be placed.
+*/
+
+.list-item.drop-target {
+  border-color: var(--color-highlight-mint);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0
+    var(--color-highlight-mint);
+}
+
+/* The indicator line */
+
+.list-item.drop-target::after {
+  content: "";
+  position: absolute;
+  left: var(--space-md);
+  right: var(--space-md);
+  bottom: -0.45rem;
+  height: 4px;
+  background: var(--color-highlight-mint);
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+/* ---------- 7. Dragging cursor ---------- */
+
+.list-item:active {
+  cursor: grabbing;
+}
+
+/* ---------- 8. Focus/accessibility ---------- */
+
+.list-item:focus-visible {
+  outline: 3px solid var(--color-paper);
+  outline-offset: 4px;
+}
 
 /* ---------- Small screens ---------- */
 @media (max-width: 480px) {
   .open-btn {
     flex: 1 1 100%; /* stacked, full-width, easy to tap */
   }
- 
+
   .sheet,
   dialog {
     --shadow-offset-lg: 6px;
   }
- 
+
   dialog {
     padding-right: calc(var(--space-lg) + 1.5rem);
   }
+
+  #draggable-list {
+    gap: var(--space-sm);
+  }
+
+  .list-item {
+    min-height: 4rem;
+
+    padding: var(--space-sm) var(--space-md);
+
+    font-size: var(--text-sm);
+  }
+
+  .list-item::before {
+    flex-basis: 2rem;
+
+    width: 2rem;
+    height: 2rem;
+
+    margin-right: var(--space-sm);
+  }
 }
- 
+
 /* ---------- Accessibility: reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -460,10 +619,19 @@ dialog form button:focus-visible {
   *::after {
     transition-duration: 0.01ms !important;
   }
- 
+
   .open-btn:hover,
   .open-btn:active,
   dialog form button:hover {
+    transform: none;
+  }
+
+  .list-item {
+    transition: none;
+  }
+
+  .list-item:hover,
+  .list-item.dragging {
     transform: none;
   }
 }
