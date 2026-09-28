@@ -66,17 +66,17 @@ const fields = Object.keys(validators).map((key) => ({
 // Show Feedback on the frontend 
 function showFeedback (field) {
     const message = field.validate(field.input.value);
-    
+
     field.group.classList.toggle("is-valid", message === "");
     field.group.classList.toggle("is-invalid", message !== "");
     field.error.textContent = message;
-    field.input.setAtrribute("aria-invalid", message === "" ? "false" : "true");
+    field.input.setAttribute("aria-invalid", message === "" ? "false" : "true");
 }
 
 function clearFeedback(field) {
     field.group.classList.remove("is-valid", "is-invalid");
     field.error.textContent = "";
-    field.input.removeAttribut("aria-invalid");
+    field.input.removeAttribute("aria-invalid");
 }
 
 function allFieldsValid() {
